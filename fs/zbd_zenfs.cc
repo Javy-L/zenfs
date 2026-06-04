@@ -388,8 +388,6 @@ ZonedBlockDevice::~ZonedBlockDevice() {
   for (const auto z : io_zones) {
     delete z;
   }
-  fprintf(stderr, "GC written: %lu MB\n",
-      gc_bytes_written_.load() / (1024 * 1024));
 
 }
 
