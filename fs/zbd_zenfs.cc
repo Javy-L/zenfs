@@ -388,6 +388,9 @@ ZonedBlockDevice::~ZonedBlockDevice() {
   for (const auto z : io_zones) {
     delete z;
   }
+  fprintf(stderr, "GC written: %lu MB\n",
+      gc_bytes_written_.load() / (1024 * 1024));
+
 }
 
 #define LIFETIME_DIFF_NOT_GOOD (100)
@@ -407,7 +410,7 @@ unsigned int GetLifeTimeDiff(Env::WriteLifeTimeHint zone_lifetime,
   }
 
   if (zone_lifetime > file_lifetime) return zone_lifetime - file_lifetime;
-  if (zone_lifetime == file_lifetime) return LIFETIME_DIFF_COULD_BE_WORSE;
+  if (zone_lifetime == file_lifetime) return 0;
 
   return LIFETIME_DIFF_NOT_GOOD;
 }
